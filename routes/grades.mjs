@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
 
   // rename fields for backwards compatibility
   if (newDocument.student_id) {
-    newDocument.learner_id = newDocument.student_id;
+    newDocument.student_id = newDocument.student_id;
     delete newDocument.student_id;
   }
 
@@ -87,7 +87,7 @@ router.get("/learner/:id", async (req, res) => {
 // Delete a learner's grade data
 router.delete("/learner/:id", async (req, res) => {
   let collection = await db.collection("grades");
-  let query = { learner_id: Number(req.params.id) };
+  let query = { student_id: Number(req.params.id) };
 
   let result = await collection.deleteOne(query);
 
@@ -100,8 +100,8 @@ router.get("/class/:id", async (req, res) => {
   let collection = await db.collection("grades");
   let query = { class_id: Number(req.params.id) };
 
-  // Check for learner_id parameter
-  if (req.query.learner) query.learner_id = Number(req.query.learner);
+  // Check for student_id parameter
+  if (req.query.learner) query.student_id = Number(req.query.learner);
 
   let result = await collection.find(query).toArray();
 
